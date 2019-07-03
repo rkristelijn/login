@@ -1,4 +1,4 @@
-# Express login
+# Express login with express-session
 
 Clone this repo or follow the steps below to learn about setting up a Node/express app that enables login, logout and secure routes.
 
@@ -20,10 +20,10 @@ Clone this repo or follow the steps below to learn about setting up a Node/expre
 | 1.6 | current result routes default route to login<br>![](./doc/images/login.png)<br>`~/login $ DEBUG=login:* npm start -s`<br>`  login:server Listening on port 3000 +0ms`<br>`GET / 304 737.652 ms - -`<br>`GET /css/bootstrap.min.css 304 `<br>`.766 ms - -`<br>`GET /stylesheets/style.css 304 1.070 ms - -` |
 | **2. add about-page and header** | Follow below steps to add about page and header |
 | 2.1 | Before we continue, I like to clean up some logging. `morgan` is creating too much noise. Remove the following lines from `app.js`:<br>`var logger = require("morgan");`<br>`app.use(logger("dev"));`<br><br>You can remove morgan from `package.json` by: <br>`npm rm --save morgan`.<br><br>While we are at it; `debug` is a direct dependency for `express` and `express-session` so we can remove it from our `package.json` by: <br>`npm rm --save debug`.<br><br>To see if `debug` still works, we can use:<br>`DEBUG=app.js,login:server,express-session npm start -s`. Note that we can use `DEBUG=*` for all output.<br><br>Now we can add debug info like so (in app.js): <br>`var debug = require('debug')('app.js');` <br> `debug('hello world');`<br><br>Our output:<br>`login:server Listening on port 3001 +0ms`<br>`  express-session no SID sent, generating session +26s`<br>`  app.js checkLoggedIn(), req.session.loggedIn: undefined rendering login +5ms`<br>`  express-session saving PybLKV4TpsaSMx_PzZx_Mj5Is4X_0U9g +748ms`<br>`  express-session set-cookie app=s%3APybLKV4TpsaSMx_PzZx_Mj5Is4X_0U9g.Bd1dSB8w4kfcL9DPonfLBXFRLtZBdqHThCNMTsv0Ixo; Path=/; HttpOnly +4ms`<br>`  express-session fetching PybLKV4TpsaSMx_PzZx_Mj5Is4X_0U9g +736ms`<br>`  express-session session found +1ms`<br>`  app.js checkLoggedIn(), req.session.loggedIn: undefined rendering login +1ms`<br>`  express-session saving PybLKV4TpsaSMx_PzZx_Mj5Is4X_0U9g +93ms`<br>`  express-session split response +1ms`
-| 2.2 | add `routes/about.js` and `views/about.pug` with [this content]() and update `app.js`; add: <br>`app.use("/about", aboutRouter);`<br>`var aboutRouter = require("./routes/about");`|
-| 2.3 | add `views/header.pug` with [this content]() and include it in `index.pug` and `users.pug` and conditionally in `views/about.pug`:<br>`if loggedIn`<br>&nbsp;&nbsp;&nbsp;&nbsp;`include header` |
+| 2.2 | add `routes/about.js` and `views/about.pug` with [this content](https://github.com/rkristelijn/login/commit/e8c1317536cad9cde82169d40f05ffd68534e112#diff-8bd0aaff64e2da1404cfd91cce49a9f8) and update `app.js`; add: <br>`app.use("/about", aboutRouter);`<br>`var aboutRouter = require("./routes/about");`|
+| 2.3 | add `views/header.pug` with [this content](https://github.com/rkristelijn/login/commit/e8c1317536cad9cde82169d40f05ffd68534e112#diff-2e915f5980f834b4e8d3c8c06bcc292a) and include it in `index.pug` and `users.pug` and conditionally in `views/about.pug`:<br>`if loggedIn`<br>&nbsp;&nbsp;&nbsp;&nbsp;`include header` |
 | 2.4 | then there are some bits and pieces to fix in `views/login.pug`:<br>- add error placeholder<br>- add link to about page<br>- change button to input, so the enter key works |
-| 2.5 | add `views/users.pug` with contents from [here]() and pass a list of users [like so]() |
+| 2.5 | add `views/users.pug` with contents from [here](https://github.com/rkristelijn/login/commit/e8c1317536cad9cde82169d40f05ffd68534e112#diff-e804aa6e48ffa93374f7428688bf657b) and pass a list of users [like so](https://github.com/rkristelijn/login/commit/e8c1317536cad9cde82169d40f05ffd68534e112#diff-e9f8fcf8d0b7b7150ff1c16a7c69ea74) |
 | **3. finalize login** | There still stuff left to do. The [examples](#sources) just support login and logout, and the session is killed after 6000 ms (6sec) |
 |3.1| We can remove the line `cookie: {maxAge: 6000}` so the session isn't just 6sec from `app.js` |
 |3.2| In `app.js` we create a `login()`- and a `logout()` function that only care about logging in and logging out.<br><br>Logout removes the session.loggedIn flag, Login sets it and calls checking the credentials. A separate function is created to check the credentials called `checkUser()` |
@@ -49,12 +49,12 @@ These are answers that I seek answer to before starting this document, raised du
 
 | Question | Answer |
 |---|---|
-| Do I need passport and passport local for logging in? | no. |
-| What is the simplest way of creating login/logout? | Cookies? Server-side session?|
-| Can I identify the user? | |
-| Is this the simplest example? | |
-| is creating `req.session.loggedIn` a legit way to manage the session? | |
-| What are generic security recommendations? | |
+| Do I need passport and passport local for logging in? | no. Minimum is `express`, `express-session` and maybe `cookie-parse`|
+| What is the simplest way of creating login/logout? Cookies? Server-side session?| This solution creates a cookie even when the user isn't logged in. This is a [session cookie](https://decodeproject.eu/cookies).<br>![](./doc/images/cookie.png)<br><br>The value is<br>`s%3Ayz92aWlUKzWDXhzlkqiz8wddo-SH2G0I.N6dzg2O0liagsejyMKLehW1aRGL6fEY1mkMrTFKOG1E` that seems to be the same value as the session on the server in the console of `DEBUG=express-session npm start -s`. <br>More on [cookie security](https://flaviocopes.com/cookies/)|
+| Can I identify the user, so I can create access groups and allow different routes per user? | No. In this case only a boolean is stored:<br>`Session {`<br>&nbsp;&nbsp;&nbsp;&nbsp;`  cookie: { path: '/', _expires: null, originalMaxAge: null, httpOnly: true },`<br>&nbsp;&nbsp;&nbsp;&nbsp;`loggedIn: true`<br>`}`|
+| Is this the simplest example? | For testing the session, you need at least 1 or 2 'secure' routes, login- and logout route and some kind of views. With a SPA the backend can be smaller. |
+| is creating `req.session.loggedIn` a legit way to manage the session? | For now it seems ok. |
+| What are generic security recommendations? | On the [express-session](https://github.com/expressjs/session#sessionoptions) page it says: <br>**Warning** The default server-side session storage, MemoryStore, is purposely not designed for a production environment. It will leak memory under most conditions, does not scale past a single process, and is meant for debugging and developing. It seems [MongoDB can store the session](https://www.npmjs.com/package/connect-mongodb-session).|
 
 # Sources
 

@@ -66,6 +66,7 @@ var checkLoggedIn = function(req, res, next) {
       "executing next()"
     );
     next();
+    console.log(req.session);
   } else {
     debug(
       "checkLoggedIn(), req.session.loggedIn:",
