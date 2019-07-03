@@ -1,8 +1,12 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: Gainsboro; /* full background lightest grey */
 }
-
-a {
-  color: #00B7FF;
+.wrapper {
+  margin: 10% 0; /* margin top and bottom */
+}
+.form-signin {
+  background: White; /* white background */
+  max-width: 30%; /* limit width */
+  margin: 0 auto; /* center */
+  padding: 2%;
 }

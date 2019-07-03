@@ -3,6 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var session = require("express-session");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -19,7 +20,32 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
+// include bootstrap css
+app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
+
+// set up the session
+app.use(
+  session({
+    secret: "app",
+    name: "app",
+    resave: true,
+    saveUninitialized: true,
+    cookie: { maxAge: 6000 }
+  })
+);
+
+var checkUser = function(req, res, next) {
+  if (req.session.loggedIn) {
+    next();
+  } else {
+    res.render("login", { title: "Login Here" });
+  }
+};
+
+// redirect to login form
+app.use("/", function(req, res, next) {
+  return checkUser(req, res, indexRouter);
+});
 app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
