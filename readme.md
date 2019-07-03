@@ -13,11 +13,11 @@ Clone this repo or follow the steps below to learn about setting up a Node/expre
 | 0.6 | Point your browser to `localhost:3000` ![](./doc/images/boilerplate.png) <br> In our console we see:<br>`~/login$ DEBUG=login:* npm start`<br><br>`> login@0.0.0 start /home/gius/login`<br>`> node ./bin/www`<br><br>`  login:server Listening on port 3000 +0ms`<br>`GET / 304 719.979 ms - -`<br>`GET /stylesheets/style.css 304 7.148 ms - -`
 | create login form | After completing these steps we have a new page and route.|
 | 1.1 | run `npm i --save express-session bootstrap` to add the dependency<br>Note that bootstrap has 2 peer dependencies: jquery and popper.js. We don't need these, because we are just going to use the css. This is a list of ways to handle the `npm WARN`:<br>1. Ignore the warnings; *not desired because the team will ignore all npm output*<br>2. Install peer deps: `npm i --save jquery popper.js`; *not desired; packers will include jquery and popper.js and let the codebase grow significantly*<br>3. Install as dev deps: `npm i -D jquery popper.js`; *Unsure yet if it solves 2, but it shuts up the WARN*<br>4. Use [ignore-warings](https://github.com/codejamninja/ignore-warnings): *Unclear [how to use](https://github.com/codejamninja/ignore-warnings/issues/2) yet, but it seems like a legit way of avoiding 2 and still keep npm output clean*<br>5. use bootstrap cdn; *Preferred to install locally to allow offline dev*<br>6. manual install bootstrap; *deps should be in package.json for keeping all updatable and visable for npm audit*|
-| 1.2 | create `/views/login.pug` |
-| 1.3 | add the route to `app.js`<br> |
-| 1.4 | update styles `public/style.css` |
-| 1.5 | current result routes default route to login<br>![](./doc/images/login.png)<br>`~/login $ DEBUG=login:* npm start -s`<br>`  login:server Listening on port 3000 +0ms`<br>`GET / 304 737.652 ms - -`<br>`GET /css/bootstrap.min.css 304 `<br>`.766 ms - -`<br>`GET /stylesheets/style.css 304 1.070 ms - -`
- |
+| 1.2 | create `/views/login.pug` [see change](https://github.com/rkristelijn/login/commit/e3c94bb22d43140f0a18054c793572fca60ce7ae#diff-6d5d452b8670045112ed889367008056) |
+| 1.3 | add the route to `app.js` for reroute to login, bootstrap and include session [see change](https://github.com/rkristelijn/login/commit/e3c94bb22d43140f0a18054c793572fca60ce7ae#diff-0364f57fbff2fabbe941ed20c328ef1a)<br> |
+| 1.4 | update styles `public/style.css` [see change](https://github.com/rkristelijn/login/commit/e3c94bb22d43140f0a18054c793572fca60ce7ae#diff-0aaa9d35a8082eda23139c53348d2e51) |
+| 1.5 | update layout.pug to include bootstrap `views/layout.pug` [see change](https://github.com/rkristelijn/login/commit/e3c94bb22d43140f0a18054c793572fca60ce7ae#diff-5c5792469bc79f8d2ab44b4192b02a20) |
+| 1.6 | current result routes default route to login<br>![](./doc/images/login.png)<br>`~/login $ DEBUG=login:* npm start -s`<br>`  login:server Listening on port 3000 +0ms`<br>`GET / 304 737.652 ms - -`<br>`GET /css/bootstrap.min.css 304 `<br>`.766 ms - -`<br>`GET /stylesheets/style.css 304 1.070 ms - -` |
 
 # Sources
 
