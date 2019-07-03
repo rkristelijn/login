@@ -1,0 +1,17 @@
+extends layout
+ 
+block content
+    include header
+    div(class="wrapper")
+        div(class="form-signin")
+            h1 A list of users
+            table(class="table")
+                thead
+                    tr
+                        th(scope="col") Username
+                        th(scope="col") Password
+                tbody
+                    each user in users
+                        tr
+                            td(scope="row") #{user.username}
+                            td #{user.password}

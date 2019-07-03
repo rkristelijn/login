@@ -1,0 +1,14 @@
+// {type:activity}
+// {generate:true}
+(start)-><a>[GET /]-><b>[logged in]->(Show homepage)->(end)
+<b>[else]->(Show login)->(end)
+
+<a>[GET /users]-><c>[logged in]->(Show users)->(end)
+<c>[else]->(Show login)
+
+<a>[GET /about]-><d>[logged in]->(Show about with bar)->(end)
+<d>[else]->(Show about without bar)->(end)
+
+<a>[POST /login]->(Check login)
+(Check login)-><e>[success]->(Login and redirect /)->(Show homepage)
+<e>[else]->(Show Login with error)->(end)

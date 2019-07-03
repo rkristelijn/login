@@ -1,12 +1,9 @@
 var express = require("express");
 var router = express.Router();
 
-/* GET users listing. */
+/* GET about page. */
 router.get("/", function(req, res, next) {
-  res.render("users", {
-    title: "User listing",
-    users: [{ username: "admin", password: "admin" }]
-  });
+  res.render("about", { title: "About", loggedIn: req.session.loggedIn });
 });
 
 module.exports = router;

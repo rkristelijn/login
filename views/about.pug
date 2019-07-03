@@ -1,0 +1,12 @@
+extends layout
+ 
+block content
+    if loggedIn 
+        include header
+    div(class="wrapper")
+        div(class="form-signin")
+            h1 About this page
+            p See code at #[a(href="https://github.com/rkristelijn/login") github.com]. Log in using admin/admin
+            if !loggedIn
+                p
+                    a(href="/") Log in
