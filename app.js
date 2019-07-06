@@ -21,20 +21,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // include bootstrap css
-const runsAsLib = __dirname.includes("node_modules");
-if (runsAsLib) {
-  app.use(
-    "/css",
-    express.static(path.join(__dirname, "..", "bootstrap", "dist", "css"))
-  );
-} else {
-  app.use(
-    "/css",
-    express.static(
-      path.join(__dirname, "node_modules", "bootstrap", "dist", "css")
-    )
-  );
-}
+app.use(
+  "/css",
+  express.static(path.join(__dirname, "public", "3rdparty", "bootstrap", "dist", "css"))
+);
 
 // set up the session
 app.use(

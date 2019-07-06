@@ -2,7 +2,17 @@
   "name": "login",
   "version": "0.0.3",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "postinstall": "copy-files-from-to"
+  },
+  "copyFiles": [
+    {
+      "from": "./node_modules/bootstrap/dist/**/*",
+      "to": "./public/3rdparty/bootstrap/dist/"
+    }
+  ],
+  "copyFilesSettings": {
+    "whenFileExists": "notify-about-available-change"
   },
   "repository": {
     "type": "git",
@@ -32,6 +42,7 @@
     "pug": "^2.0.4"
   },
   "devDependencies": {
+    "copy-files-from-to": "2.0.2",
     "jquery": "^3.4.1",
     "popper.js": "^1.15.0"
   }
