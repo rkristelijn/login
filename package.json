@@ -1,6 +1,7 @@
 {
-  "name": "login",
-  "version": "0.0.3",
+  "name": "login-express-session",
+  "version": "1.0.3",
+  "description": "A simple example of a server rendered app that enables login, logout and secure routes using node, express, express-session, pug and bootstrap.",
   "scripts": {
     "start": "node ./bin/www"
   },
