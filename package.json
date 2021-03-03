@@ -40,7 +40,7 @@
     "express": "~4.16.1",
     "express-session": "^1.16.2",
     "http-errors": "~1.6.3",
-    "pug": "^2.0.4"
+    "pug": "^3.0.1"
   },
   "devDependencies": {
     "copy-files-from-to": "2.0.2",
