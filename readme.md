@@ -28,10 +28,10 @@ Clone this repo or follow the steps below to learn about setting up a Node/expre
 |3.1| We can remove the line `cookie: {maxAge: 6000}` so the session isn't just 6sec from `app.js` |
 |3.2| In `app.js` we create a `login()`- and a `logout()` function that only care about logging in and logging out.<br><br>Logout removes the session.loggedIn flag, Login sets it and calls checking the credentials. A separate function is created to check the credentials called `checkUser()` |
 
-# Final design
+## Final design
 ![](./doc/diagrams/views.activity.svg)
 
-# Final Demo
+## Final Demo
 - clean start `/`
 - get `/about`
 - get `/users`
@@ -43,7 +43,7 @@ Clone this repo or follow the steps below to learn about setting up a Node/expre
 - wrong login
 
 ![](./doc/images/demo.gif)
-# Questions / evaluation
+## Questions / evaluation
 
 These are answers that I seek answer to before starting this document, raised during creation and reviewing the code.
 
@@ -56,8 +56,12 @@ These are answers that I seek answer to before starting this document, raised du
 | is creating `req.session.loggedIn` a legit way to manage the session? | For now it seems ok. |
 | What are generic security recommendations? | On the [express-session](https://github.com/expressjs/session#sessionoptions) page it says: <br>**Warning** The default server-side session storage, MemoryStore, is purposely not designed for a production environment. It will leak memory under most conditions, does not scale past a single process, and is meant for debugging and developing. It seems [MongoDB can store the session](https://www.npmjs.com/package/connect-mongodb-session).|
 
-# Sources
+## Sources
 
 1. [original tutorial](http://projectsplaza.com/login-logout-nodejs-express/)
 2. [another tutor from Nima HKH](https://medium.com/@nima.2004hkh/create-your-first-login-page-with-exprerssjs-pug-f42250229486)
 3. [node logging done right](http://www.jyotman.xyz/post/logging-in-node.js-done-right)
+
+## Sponsor me
+
+[Sponsor me](https://github.com/sponsors/rkristelijn/) if you appreciate my work.
