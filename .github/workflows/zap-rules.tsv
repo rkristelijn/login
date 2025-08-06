@@ -1,0 +1,4 @@
+10016	IGNORE	http://localhost:3000	(Cross-Domain Misconfiguration - We're testing locally)
+10049	IGNORE	http://localhost:3000	(Non-Storable Content - Not relevant for our test)
+10038	IGNORE	http://localhost:3000	(Content Security Policy Header Not Set - We'll address this separately)
+90022	IGNORE	http://localhost:3000	(Application Error Disclosure - Expected during testing)
