@@ -18,8 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: '10'
           
       - name: Install dependencies
         run: npm ci
@@ -42,8 +41,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: '10'
       
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
@@ -88,8 +86,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: '10'
           
       - name: Install dependencies
         run: npm ci

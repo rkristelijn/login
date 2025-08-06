@@ -46,11 +46,15 @@
     "pug": "^2.0.4"
   },
   "devDependencies": {
-    "axios": "^0.27.2",
-    "cheerio": "^1.0.0-rc.12",
+    "axios": "^0.21.4",
+    "cheerio": "^1.0.0-rc.3",
     "copy-files-from-to": "2.0.2",
     "jquery": "^3.4.1",
     "popper.js": "^1.15.0",
-    "snyk": "^1.1130.0"
+    "snyk": "^1.500.0"
+  },
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
   }
 }
