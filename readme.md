@@ -1,5 +1,13 @@
 # Express login with express-session
 
+[![npm](https://img.shields.io/npm/dm/login)](https://www.npmjs.com/package/login)
+[![version](https://img.shields.io/npm/v/login?label=package)](https://www.npmjs.com/package/login)
+![license](https://img.shields.io/npm/l/login)
+![npm total downloads](https://img.shields.io/npm/dt/login)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+![GitHub stars](https://img.shields.io/github/stars/rkristelijn/login)
+![Last Commit](https://img.shields.io/github/last-commit/rkristelijn/login)
+
 Clone this repo or follow the steps below to learn about setting up a Node/express app that enables login, logout and secure routes.
 
 | step          | instruction                                 |
