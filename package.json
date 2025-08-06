@@ -6,8 +6,7 @@
     "start": "node ./bin/www",
     "copy-files-from-to": "copy-files-from-to",
     "security:test": "node security/exploit-demos.js",
-    "security:audit": "npm audit",
-    "security:snyk": "snyk test"
+    "security:audit": "npm audit"
   },
   "copyFiles": [
     {
@@ -47,11 +46,10 @@
   },
   "devDependencies": {
     "axios": "^0.21.4",
-    "cheerio": "^1.0.0-rc.3",
+    "cheerio": "1.0.0-rc.2",
     "copy-files-from-to": "2.0.2",
     "jquery": "^3.4.1",
-    "popper.js": "^1.15.0",
-    "snyk": "^1.500.0"
+    "popper.js": "^1.15.0"
   },
   "engines": {
     "node": ">=10.0.0",
