@@ -7,6 +7,37 @@
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 ![GitHub stars](https://img.shields.io/github/stars/rkristelijn/login)
 ![Last Commit](https://img.shields.io/github/last-commit/rkristelijn/login)
+![Security Scans](https://github.com/rkristelijn/login/actions/workflows/security-scan.yml/badge.svg)
+
+## ⚠️ Important Disclaimer
+
+**This project is intentionally vulnerable and is maintained for educational and testing purposes only.**
+
+This is an old project created to help understand what it takes to build a simple login system from scratch. It was originally published on demand of @paras20xx who wanted this project to be available to test his automated login testing tools.
+
+**I keep this project here as target practice because it contains known security vulnerabilities.**
+
+### 🚨 Do NOT use this in production
+
+Unless you know exactly what you are doing and understand the security implications, **you should use validated libraries and established authentication mechanisms** for building login features in real applications. Consider using:
+
+- [Passport.js](http://www.passportjs.org/) for Node.js authentication
+- [Auth0](https://auth0.com/) for managed authentication
+- [Firebase Authentication](https://firebase.google.com/products/auth)
+- [AWS Cognito](https://aws.amazon.com/cognito/)
+- [NextAuth.js](https://next-auth.js.org/) for Next.js applications
+
+### Purpose of this repository
+
+This project serves as:
+- **Educational material** to understand basic authentication concepts
+- **Security testing target** for penetration testing tools and techniques
+- **Vulnerability demonstration** showing common authentication flaws
+- **Automated testing playground** for security scanning tools
+
+The security tests and exploit demonstrations included in this repository serve as proof that this implementation contains real vulnerabilities that could be exploited in a production environment.
+
+---
 
 Clone this repo or follow the steps below to learn about setting up a Node/express app that enables login, logout and secure routes.
 
@@ -51,6 +82,49 @@ Clone this repo or follow the steps below to learn about setting up a Node/expre
 - wrong login
 
 ![](./doc/images/demo.gif)
+
+## Security Testing
+
+This project includes automated security testing via GitHub Actions to demonstrate common web application vulnerabilities. The security testing includes:
+
+### Automated Security Scans
+
+1. **OWASP ZAP Scan** - Runs the OWASP Zed Attack Proxy to identify common web vulnerabilities
+2. **Dependency Scanning** - Checks for vulnerabilities in npm dependencies
+3. **Security Headers Check** - Verifies proper security headers are in place
+4. **Snyk Security Scan** - Additional dependency and code scanning
+
+### Security Exploit Demonstrations
+
+The project includes demonstrations of common security vulnerabilities that can affect authentication systems:
+
+1. **Session Fixation** - Shows how session management flaws can be exploited
+2. **Brute Force Attacks** - Demonstrates password guessing without proper rate limiting
+3. **CSRF (Cross-Site Request Forgery)** - Shows how state-changing operations can be vulnerable
+4. **XSS (Cross-Site Scripting)** - Demonstrates injection of malicious scripts
+5. **SQL Injection** - Shows how improper input handling can lead to database attacks
+
+To run the security demonstrations locally:
+
+```bash
+npm install
+npm run security:test
+```
+
+> **Note**: These demonstrations are for educational purposes only and should not be used against any system without explicit permission.
+
+### Security Best Practices
+
+Based on the findings from our security testing, here are recommended improvements:
+
+1. Implement CSRF protection using tokens
+2. Add rate limiting for login attempts
+3. Use secure, HTTP-only cookies with SameSite attribute
+4. Implement proper Content Security Policy headers
+5. Use parameterized queries for database operations
+6. Regenerate session IDs after authentication
+7. Add proper input validation and output encoding
+
 ## Questions / evaluation
 
 These are answers that I seek answer to before starting this document, raised during creation and reviewing the code.
