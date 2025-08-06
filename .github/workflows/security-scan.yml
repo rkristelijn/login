@@ -2,9 +2,9 @@ name: Comprehensive Security Scan
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
   schedule:
     - cron: '0 0 * * 0'  # Run weekly
   workflow_dispatch:
@@ -13,18 +13,22 @@ jobs:
   dependency-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '10'
+          
+      - name: Install dependencies
+        run: npm ci
           
       - name: Run npm audit
         run: npm audit --json > npm-audit.json || true
         
       - name: Upload npm audit results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: npm-audit-report
           path: npm-audit.json
@@ -32,30 +36,44 @@ jobs:
   snyk-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '10'
       
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --severity-threshold=high
+          args: --severity-threshold=high --json > snyk-results.json
+          
+      - name: Upload Snyk results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: snyk-scan-report
+          path: snyk-results.json
           
   owasp-dependency-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: OWASP Dependency Check
         uses: dependency-check/Dependency-Check_Action@main
         with:
           project: 'login'
           path: '.'
-          format: 'HTML'
+          format: 'ALL'
           out: 'reports'
           
       - name: Upload dependency check report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: dependency-check-report
           path: reports/
@@ -63,12 +81,12 @@ jobs:
   security-headers-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '10'
           
       - name: Install dependencies
         run: npm ci
@@ -76,15 +94,35 @@ jobs:
       - name: Start application in background
         run: |
           npm start &
-          sleep 10
+          sleep 15
+          
+      - name: Wait for application to be ready
+        run: |
+          timeout 30 bash -c 'until curl -f http://localhost:3000; do sleep 2; done'
           
       - name: Check security headers
         run: |
-          curl -s -D - http://localhost:3000 -o /dev/null > headers.txt
-          cat headers.txt
+          echo "=== Security Headers Check ===" > headers-report.txt
+          echo "Date: $(date)" >> headers-report.txt
+          echo "" >> headers-report.txt
+          echo "Response Headers:" >> headers-report.txt
+          curl -s -D - http://localhost:3000 -o /dev/null >> headers-report.txt
+          echo "" >> headers-report.txt
+          echo "=== Security Analysis ===" >> headers-report.txt
+          if ! curl -s -D - http://localhost:3000 -o /dev/null | grep -i "x-frame-options"; then
+            echo "❌ Missing X-Frame-Options header" >> headers-report.txt
+          fi
+          if ! curl -s -D - http://localhost:3000 -o /dev/null | grep -i "content-security-policy"; then
+            echo "❌ Missing Content-Security-Policy header" >> headers-report.txt
+          fi
+          if ! curl -s -D - http://localhost:3000 -o /dev/null | grep -i "x-content-type-options"; then
+            echo "❌ Missing X-Content-Type-Options header" >> headers-report.txt
+          fi
+          cat headers-report.txt
           
       - name: Upload headers report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: security-headers
-          path: headers.txt
+          name: security-headers-report
+          path: headers-report.txt

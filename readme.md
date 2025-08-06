@@ -113,17 +113,67 @@ npm run security:test
 
 > **Note**: These demonstrations are for educational purposes only and should not be used against any system without explicit permission.
 
-### Security Best Practices
+### Security Findings from Automated Scans
 
-Based on the findings from our security testing, here are recommended improvements:
+Our automated OWASP ZAP scans have identified the following vulnerabilities, which serve as excellent examples for security education:
 
-1. Implement CSRF protection using tokens
-2. Add rate limiting for login attempts
-3. Use secure, HTTP-only cookies with SameSite attribute
-4. Implement proper Content Security Policy headers
-5. Use parameterized queries for database operations
-6. Regenerate session IDs after authentication
-7. Add proper input validation and output encoding
+#### Critical Security Issues Found:
+
+1. **Absence of Anti-CSRF Tokens [10202]**
+   - **Risk**: Cross-Site Request Forgery attacks
+   - **Fix**: Implement CSRF tokens using `csurf` middleware
+   ```javascript
+   const csrf = require('csurf');
+   app.use(csrf({ cookie: true }));
+   ```
+
+2. **Missing Anti-clickjacking Header [10020]**
+   - **Risk**: Clickjacking attacks
+   - **Fix**: Add X-Frame-Options header
+   ```javascript
+   app.use((req, res, next) => {
+     res.setHeader('X-Frame-Options', 'DENY');
+     next();
+   });
+   ```
+
+3. **Cookie without SameSite Attribute [10054]**
+   - **Risk**: CSRF and session hijacking
+   - **Fix**: Configure session cookies properly
+   ```javascript
+   app.use(session({
+     cookie: { 
+       sameSite: 'strict',
+       secure: true, // Only over HTTPS
+       httpOnly: true 
+     }
+   }));
+   ```
+
+4. **X-Content-Type-Options Header Missing [10021]**
+   - **Risk**: MIME-type confusion attacks
+   - **Fix**: Add nosniff header
+   ```javascript
+   app.use((req, res, next) => {
+     res.setHeader('X-Content-Type-Options', 'nosniff');
+     next();
+   });
+   ```
+
+5. **Server Information Disclosure via X-Powered-By**
+   - **Risk**: Information leakage about server technology
+   - **Fix**: Disable X-Powered-By header
+   ```javascript
+   app.disable('x-powered-by');
+   ```
+
+#### Modern Security Headers Missing:
+
+- **Content Security Policy (CSP)** - Prevents XSS attacks
+- **Permissions Policy** - Controls browser features
+- **Sec-Fetch headers** - Modern browser security features
+
+These findings demonstrate real vulnerabilities that exist in many web applications and provide excellent learning opportunities for understanding web security.
 
 ## Questions / evaluation
 
