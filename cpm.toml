@@ -1,0 +1,20 @@
+[project]
+name = "login"
+version = "1.0.0"
+lang = "javascript"
+
+[checks]
+format-code = true
+lint-code = true
+sast-secret = true
+complexity = true
+file-size = true
+source-lines = 500
+
+[hooks]
+pre-commit = true
+pre-push = true
+commit-msg = true
+
+[process]
+maturity-target = 3
